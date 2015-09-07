@@ -1,14 +1,56 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.nineapps.elasticsearch.plugin.cloudwatch</groupId>
+
+	<groupId>com.gu.elasticsearch.plugin.cloudwatch</groupId>
 	<artifactId>CloudwatchPlugin</artifactId>
 	<packaging>jar</packaging>
-	<version>1.2</version>
+	<version>1.0</version>
+
 	<name>CloudwatchPlugin</name>
-	<url>http://maven.apache.org</url>
-	<build>
-		<plugins>
+	<url>https://github.com/guardian/elasticsearch-cloudwatch</url>
+  <description>An Elasticserch plugin which pushes node statistics to AWS Cloudwatch</description>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+      <comments>A business-friendly OSS license</comments>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:git:https://github.com/guardian/elasticsearch-cloudwatch</connection>
+    <developerConnection>scm:git:https://github.com/guardian/elasticsearch-cloudwatch</developerConnection>
+    <tag>HEAD</tag>
+    <url>https://github.com/guardian/elasticsearch-cloudwatch</url>
+  </scm>
+
+  <developers>
+    <developer>
+      <id>kenoir</id>
+      <name>Robert Kenny</name>
+      <email>robert.kenny@guardian.co.uk</email>
+      <url>https://github.com/kenoir</url>
+      <organization>The Guardian</organization>
+      <organizationUrl>http://www.theguardian.com</organizationUrl>
+    </developer>
+  </developers>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
+
+  <build>
+    <plugins>
 			<!-- Add/Edit items in META-INF/MANIFEST.MF -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -52,9 +94,11 @@
 			</plugin>
 			<!-- Generate the release zip file (run during package step) -->
 			<plugin>
+
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.2.1</version>
+
 				<configuration>
 					<finalName>elasticsearch-${project.name}-${elasticsearch.version}</finalName>
 					<appendAssemblyId>false</appendAssemblyId>
@@ -63,6 +107,7 @@
 						<descriptor>assembly/release.xml</descriptor>
 					</descriptors>
 				</configuration>
+
 				<executions>
 					<execution>
 						<id>generate-release-plugin</id>
@@ -72,43 +117,60 @@
 						</goals>
 					</execution>
 				</executions>
+
 			</plugin>	
-		</plugins>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
+
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.3</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>false</autoReleaseAfterClose>
+        </configuration>
+      </plugin>
+
+    </plugins>
+
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
 				<filtering>true</filtering>
 				<includes>
 					<include>**/*.properties</include>
 				</includes>
 			</resource>
 		</resources>
+
 	</build>
-	<properties>
-		<elasticsearch.version>1.0.1</elasticsearch.version>
-	</properties>
+
 	<dependencies>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.8.2</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.elasticsearch</groupId>
 			<artifactId>elasticsearch</artifactId>
 			<version>${elasticsearch.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk</artifactId>
-			<version>1.3.33</version>
+      <version>${aws-java-sdk.version}</version>
 		</dependency>
+
 	</dependencies>
-	<repositories>
-		<repository>
-			<id>sonatype</id>
-			<name>Sonatype Groups</name>
-			<url>https://oss.sonatype.org/content/groups/public/</url>
-		</repository>
-	</repositories>
+
+	<properties>
+		<elasticsearch.version>1.7.1</elasticsearch.version>
+    <aws-java-sdk.version>1.10.16</aws-java-sdk.version>
+	</properties>
+
 </project>

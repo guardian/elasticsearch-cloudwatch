@@ -18,17 +18,18 @@ public class CloudwatchPlugin extends AbstractPlugin {
 
     public String name() {
         return "cloudwatch-plugin";
-	}
+    }
 
-	public String description() {
+    public String description() {
         return "Plugin which stores cluster state stats in Cloudwatch";
-	}
-	
+    }
+
     @Override
     public Collection<Class<? extends LifecycleComponent>> services() {
-		Collection<Class<? extends LifecycleComponent>> services = newArrayList();
+        Collection<Class<? extends LifecycleComponent>> services = newArrayList();
         if (settings.getAsBoolean("metrics.cloudwatch.enabled", true)) {
             services.add(CloudwatchPluginService.class);
         }
         return services;
-    }}
+    }
+}
