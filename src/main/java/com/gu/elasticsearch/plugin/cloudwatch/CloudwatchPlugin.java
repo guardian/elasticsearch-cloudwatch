@@ -1,4 +1,4 @@
-package net.nineapps.elasticsearch.plugin.cloudwatch;
+package com.gu.elasticsearch.plugin.cloudwatch;
 
 import static org.elasticsearch.common.collect.Lists.newArrayList;
 
